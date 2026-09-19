@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פשוט לתרגל · מתמטיקה לקראת שנה א'</title>
+<meta name="description" content="תרגול לשנה ראשונה בהנדסה או כל תואר מדעי אחר, מבוסס על הקורס ״פשוט מתמטיקה ״ של הטכניון. האתר אינו רשמי, ההתקדמות נשמרת רק בדפדפן שלכם. נוצר על ידי דוד קופצוב.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>∫</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Secular+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="styles.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<script defer src="videos.js"></script>
+<script defer src="gens.js"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">דלגו לתוכן</a>
+<header class="top">
+  <div class="brand">
+    <span class="logo">פשוט לתרגל</span>
+    <span class="tag">מתמטיקה לקראת שנה א', לפי "פשוט מתמטיקה" של הטכניון - נוצר על ידי דוד קופצוב</span>
+  </div>
+  <nav class="tabs" aria-label="ניווט ראשי">
+    <a href="#practice" data-page="practice">תרגול</a>
+    <a href="#mistakes" data-page="mistakes">הטעויות שלי <span class="badge" id="mistakeBadge" hidden>0</span></a>
+    <a href="#progress" data-page="progress">סילבוס והתקדמות</a>
+    <a href="#recs" data-page="recs">המלצות</a>
+    <button class="gear" id="setBtn" aria-label="הגדרות" title="הגדרות">⚙</button>
+  </nav>
+</header>
+
+<div class="netwarn" id="netWarn" hidden>המשוואות לא נטענו כי אין חיבור לאינטרנט. הן מוצגות כרגע כקוד. התחברו ורעננו את הדף.</div>
+
+<main id="main">
+  <!-- תרגול -->
+  <section id="page-practice" class="page">
+    <div class="filters">
+      <div class="frow"><span class="flabel">נושאים</span><div class="chips" id="topicChips"></div></div>
+      <div class="frow"><span class="flabel">רמה</span><div class="chips" id="lvlChips"></div></div>
+      <div class="frow"><span class="flabel">אילו שאלות</span>
+        <div class="seg" id="modeSeg" role="group" aria-label="סוג שאלות">
+          <button data-m="new">שאלות חדשות</button>
+          <button data-m="solved">שאלות שכבר פתרתי</button>
+          <button data-m="wrong">שאלות שטעיתי בהן</button>
+        </div>
+      </div>
+    </div>
+    <article class="qcard" id="qcard" aria-live="polite"></article>
+    <p class="kbd-hint">טיפ: אפשר לענות עם המקשים 1–4.</p>
+  </section>
+
+  <!-- טעויות -->
+  <section id="page-mistakes" class="page" hidden>
+    <div class="pagehead">
+      <h1>הטעויות שלי</h1>
+      <div class="tools">
+        <label>נושא <select id="mTopic"><option value="">כל הנושאים</option></select></label>
+        <label>מצב <select id="mStatus"><option value="open">פתוחות</option><option value="done">הובנו</option><option value="all">הכל</option></select></label>
+        <button class="btn exportBtn">ייצוא לאקסל</button>
+      </div>
+    </div>
+    <div id="mList"></div>
+  </section>
+
+  <!-- התקדמות -->
+  <section id="page-progress" class="page" hidden>
+    <div class="pagehead"><h1>סילבוס והתקדמות</h1><div class="tools"><button class="btn exportBtn">ייצוא לאקסל (עם גרפים)</button></div></div>
+    <div id="pSummary"></div>
+    <h2 class="h2">הסילבוס</h2>
+    <p class="sub">12 הקורסים של התוכנית. כשסיימתם ללמוד נושא בקורס או בסרטונים — סמנו "למדתי".</p>
+    <ol class="syllabus" id="syllabus"></ol>
+    <h2 class="h2">איפה תרגלתם ואיפה טעיתם</h2>
+    <div class="pies"><canvas id="pie1" role="img"></canvas><canvas id="pie2" role="img"></canvas></div>
+  </section>
+
+  <!-- המלצות -->
+  <section id="page-recs" class="page" hidden>
+    <div class="pagehead"><h1>המלצות</h1></div>
+    <p class="sub">הסדר: קודם נושאים שעוד לא למדתם, אחר כך הנושאים החלשים שלכם, ובסוף טעויות שהגיע הזמן לחזור עליהן.</p>
+    <div id="recList"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  מבוסס על <a href="https://campus.gov.il/program/iit-acd-rfp4-mathematics101-he/" target="_blank" rel="noopener">"פשוט מתמטיקה" — הטכניון, קמפוס IL</a>. האתר אינו רשמי. ההתקדמות נשמרת רק בדפדפן שלכם.
+  <br>נוצר על ידי דוד קופצוב, אוניברסיטת תל אביב.
+  <br>הערות והצעות לשיפור יתקבלו בשמחה במייל <a href="mailto:David.kuptzov@gmail.com">David.kuptzov@gmail.com</a>
+</footer>
+
+<dialog id="sheetDlg" aria-label="חומר קריאה">
+  <button class="closeDlg" aria-label="סגירה">✕</button>
+  <div id="sheetBody"></div>
+</dialog>
+
+<dialog id="setDlg" aria-label="הגדרות">
+  <button class="closeDlg" aria-label="סגירה">✕</button>
+  <h2>הגדרות</h2>
+  <p class="muted" id="storeInfo"></p>
+  <button class="btn ghost danger" id="resetAll">מחיקת כל ההתקדמות</button>
+</dialog>
+</body>
+</html>
